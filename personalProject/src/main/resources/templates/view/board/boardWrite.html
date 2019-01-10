@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/layout/default">
+
+	<!-- 사용자 CSS 추가 -->
+	<th:block layout:fragment="css">
+	</th:block>
+
+	<!-- 사용자 스크립트 추가 -->
+	<th:block layout:fragment="script">
+	</th:block>
+
+	<div layout:fragment="content" >
+		<nav th:replace="/fragments/navbar :: navbarFragment('board')"></nav>
+		<nav th:replace="/fragments/intro :: introFragment('> board > write')"></nav>
+		
+		<!-- section contact -->
+		<section id="contact" class="section">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="heading">
+							<h3><span>Get in touch</span></h3>
+						</div>
+						<div class="sub-heading">
+							<p>
+								Lorem ipsum dolor sit amet, mutat paulo simul per no, assum fastidii vituperata eam no.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<h4><i class="icon-edit"></i><strong>Board Write form</strong></h4>
+						<p>
+							Want to work with us or just want to say hello? Don't hesitate to get in touch!
+						</p>
+						<!-- start contact form -->
+						<form action="#" th:action="@{/board/post}" th:object="${board}" method="post"> <!--  class="contactForm" role="form" --> 
+							<div id="sendmessage">Your message has been sent. Thank you!</div>
+							<div id="errormessage"></div>
+							<ul class="contact-list">
+								<li class="form-group">
+									<label for="writer">Id <span>*</span></label>
+									<input type="text" th:field="*{uId}" class="form_input" placeholder="Your Name" readonly></input>
+									<span th:if="${#fields.hasErrors('uId')}" th:errors="*{uId}">writer</span>
+								</li>
+								<li class="form-group">
+									<label for="writer">Writer <span>*</span></label>
+									<input type="text" th:field="*{writer}" class="form_input" placeholder="Your Name" readonly></input>
+									<span th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">writer</span>
+								</li>
+								<li class="form-group">
+									<label for="title">Title <span>*</span></label>
+									<input type="text" th:field="*{title}" class="form_input" placeholder="Your Title"/>
+									<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</span>
+								</li>
+<!-- 								<li class="form-group"> -->
+<!-- 									<label for="content">Content <span>*</span></label> -->
+<!-- 									<input type="text" th:field="*{content}" class="form_input" placeholder="Your Content"></input> -->
+<!-- 									<span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</span> -->
+<!-- 								</li> -->
+								
+								<li class="form-group">
+									<label for="content">Content <span>*</span></label>
+									<textarea type="text" th:field="*{content}" class="form_textarea" rows="12" placeholder="Your Content"></textarea>
+									<span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</span>
+								</li>
+
+								<li class="last">
+									<button class="btn btn-large btn-theme" type="submit" id="send">Send a message</button>
+								</li>
+							</ul>
+						</form>
+
+						<!-- end contact form -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end section contact -->
+	</div>
+</html>
+		

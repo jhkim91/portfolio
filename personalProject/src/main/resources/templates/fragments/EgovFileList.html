@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<div th:fragment="egovFileListFragment()">
+	
+	<script>
+// 		function fn_egov_downFile(atchFileId, fileSn){
+// 			window.open("/cmm/fms/FileDown.do?atchFileId="+atchFileId+"&fileSn="+fileSn);
+// 		}
+
+		function fn_egov_check_file(flag) {
+			if (flag=="Y") {
+				document.getElementById('file_upload_posbl').style.display = "block";
+				document.getElementById('file_upload_imposbl').style.display = "none";
+			} else {
+				document.getElementById('file_upload_posbl').style.display = "none";
+				document.getElementById('file_upload_imposbl').style.display = "block";
+			}
+		}
+
+		function fn_egov_deleteFile(atchFileId, fileSn) {
+			forms = document.getElementsByTagName("form");
+
+			console.log("forms");
+			console.log(forms);
+			for (var i = 0; i < forms.length; i++) {
+				if (typeof(forms[i].atchFileId) != "undefined" &&
+						typeof(forms[i].fileSn) != "undefined" &&
+						typeof(forms[i].fileListCnt) != "undefined") {
+					form = forms[i];
+				}
+			}	
+
+			form = document.forms[1];
+			console.log(form);
+			form.atchFileId.value = atchFileId;
+			form.fileSn.value = fileSn;
+			form.action = "/deleteFile/"+atchFileId+"/"+fileSn;
+			form.submit();
+		}
+	</script>
+
+		<!-- start top -->
+		<!-- <form name="fileForm" action="" method="post" >  -->
+		<input type="hidden" name="atchFileId" th:value="${atchFileId}">
+		<input type="hidden" name="fileSn" >
+		<input type="hidden" name="fileListCnt" id="fileListCnt" value="${fileListCnt}">
+		
+		<!-- </form>  -->
+		
+		<!--<title>파일목록</title> -->
+		
+			<table th:if="${portfolio.fileVO != null}">
+				<tr th:each="fileVO,index : ${portfolio.fileVO}">
+					<td>
+						<a th:href="${'/download/'+fileVO.atchFileId +'/'+ fileVO.fileSn}">
+							<span th:text="${fileVO.orignlFileNm}+' [ '+${fileVO.fileMg}+' byte]'"></span>
+						</a>
+						<input th:type="button" th:value="파일삭제" th:onclick="fn_egov_deleteFile('[[${fileVO.atchFileId}]]', '[[${fileVO.fileSn}]]')">
+						<!-- view화면  
+						<a href="javascript:fn_egov_downFile('<c:out value="${fileVO.atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>')">
+						<c:out value="${fileVO.orignlFileNm}"/>&nbsp;[<c:out value="${fileVO.fileMg}"/>&nbsp;byte]
+						</a>
+						 -->
+					</td>
+				</tr>
+				</c:forEach>
+				<tr th:if="${portfolio.atchFileId == 0}">
+					<td></td>
+				</tr>
+			</table>
+	</div>
+</html>

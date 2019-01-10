@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/layout/default">
+
+	<!-- 사용자 CSS 추가 -->
+	<th:block layout:fragment="css">
+	</th:block>
+
+	<!-- 사용자 스크립트 추가 -->
+	<th:block layout:fragment="script">
+		<script th:src="@{/assets/js/EgovMultiFile.js}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				makeFileAttachment();
+			});
+
+			function makeFileAttachment(){
+				var existFileNum = "[[${fileListCnt>0} ? ${fileListCnt} : 0]]";
+				var maxFileNum = document.frm.posblAtchFileNumber.value;
+
+				if (existFileNum=="undefined" || existFileNum ==null) {
+					existFileNum = 0;
+				}
+				if (maxFileNum=="undefined" || maxFileNum ==null) {
+					maxFileNum = 0;
+				}
+				var uploadableFileNum = maxFileNum - existFileNum;
+				if (uploadableFileNum<0) {
+					uploadableFileNum = 0;
+				}
+				if (uploadableFileNum != 0) {
+					fn_egov_check_file('Y');
+					var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), uploadableFileNum );
+					multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );
+				} else {
+					fn_egov_check_file('N');
+				}
+			}
+			
+			function fn_egov_regist_pf(){
+				if (confirm('수정하시겠습니까?')) {
+					document.frm.action = "/portfolio/update/[[${portfolio.seq}]]";
+					document.frm.submit();
+				}
+			}
+		</script>  
+	</th:block>
+
+	<div layout:fragment="content">
+		<nav th:replace="/fragments/navbar :: navbarFragment('portfolio')"></nav>
+		<nav th:replace="/fragments/intro :: introFragment('> portfolio > Modify')"></nav>
+		
+		<!-- section contact -->
+		<section id="contact" class="section">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="heading">
+							<h3><span>Get in touch</span></h3>
+						</div>
+						<div class="sub-heading">
+							<p>
+								Lorem ipsum dolor sit amet, mutat paulo simul per no, assum fastidii vituperata eam no.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<h4><i class="icon-edit"></i><strong>Portfolio Write form</strong></h4>
+						<p>
+							Want to work with us or just want to say hello? Don't hesitate to get in touch!
+						</p>
+						<!-- start contact form -->
+						<form action="#" name="frm" th:action="@{/portfolio/post/{seq}(seq=${portfolio.seq})}" th:object="${portfolio}" method="POST" enctype="multipart/form-data">
+							<input type="hidden" name="returnUrl" th:value="@{/portfolio/post/{seq}(seq=${portfolio.seq})}"/>
+							<div id="sendmessage">Your message has been sent. Thank you!</div>
+							<div id="errormessage"></div>
+							<ul class="contact-list">
+								<li class="form-group">
+									<label for="writer">Id <span>*</span></label>
+									<input type="text" th:field="*{uId}" class="form_input" placeholder="Your Name" readonly></input>
+									<span th:if="${#fields.hasErrors('uId')}" th:errors="*{uId}">writer</span>
+								</li>
+								<li class="form-group">
+									<label for="writer">Writer <span>*</span></label>
+									<input type="text" th:field="*{writer}" class="form_input" placeholder="Your Name" readonly></input>
+									<span th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">writer</span>
+								</li>
+								<li class="form-group">
+									<label for="title">Title <span>*</span></label>
+									<input type="text" th:field="*{title}" class="form_input" placeholder="Your Title"/>
+									<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</span>
+								</li>
+								<li class="form-group">
+									<label for="content">Content <span>*</span></label>
+									<textarea type="text" th:field="*{content}" class="form_textarea" rows="12" placeholder="Your Content"></textarea>
+									<span th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</span>
+								</li>
+					
+					
+								<li th:if="${portfolio.fileVO != null}">
+									<div th:replace="/fragments/EgovFileList :: egovFileListFragment()"></div>
+									<!-- <img th:if="${dto.thumbnailYn.equals('Y')}" th:src="@{${dto.fileStreCours +'/s_'+ dto.streFileNm}}" th:alt="${dto.orignlFileNm}">
+									<a th:href="${'/download/'+dto.atchFileId +'/'+ dto.fileSn}" class="btn btn-success">
+										<span th:text="${dto.orignlFileNm}+' ( '+${dto.fileMg}+' kb )'"></span>
+									</a> -->
+								</li>
+								<li>
+									<input type="hidden" name="posblAtchFileNumber" value="5" />
+		    						<div id="file_upload_posbl"  style="display:none;" >
+										<table width="680px" cellspacing="0" cellpadding="0" border="0" align="center" class="UseTable">
+											<tr>
+												<td><input name="file_1" id="egovComFileUploader" type="file" /></td>
+											</tr>
+											<tr>
+												<td>
+													<div id="egovComFileList"></div>
+												</td>
+											</tr>
+										</table>
+									</div>
+									
+									<div id="file_upload_imposbl"  style="display:none;" >
+							            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+										    <tr>
+										        <td>더 이상 파일을 첨부할 수 없습니다.</td>
+										    </tr>
+							   	        </table>
+									</div>
+								</li>
+								
+								
+								<li class="last">
+									<button class="btn btn-large btn-theme" type="button" id="send" onclick="javascript:fn_egov_regist_pf(); return false;">Send a message</button>
+								</li>
+							</ul>
+						</form>
+						<!-- end contact form -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end section contact -->
+	</div>
+</html>
+		

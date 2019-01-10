@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4">
+	
+	<header th:fragment="navbarFragment(page)">
+		<!-- start top -->
+		<div id="topnav" class="navbar navbar-fixed-top default">
+			<div class="navbar-inner">
+				<div class="container">
+					<div class="logo">
+						<a th:href="@{'/'}">portfolio</a>
+					</div>
+					<form th:action="@{/logout}" name="logout" method="post">
+					<div class="navigations">
+						<nav>
+							<ul class="nav pull-right">
+								<li th:class="${#strings.equals(page,'home')} ? current : ''"><a th:href="@{'/'}">Home</a></li>
+								<li th:class="${#strings.equals(page,'board')} ? current : ''"><a th:href="@{'/board'}">Board</a></li>
+								<li th:class="${#strings.equals(page,'portfolio')} ? current : ''"><a th:href="@{'/portfolio'}">Portfolio</a></li>
+								<li sec:authorize="hasRole('ROLE_ANONYMOUS')" th:class="${#strings.equals(page,'login')} ? current : ''"><a th:href="@{'/login'}">Login</a></li>
+								<li sec:authorize="hasRole('ROLE_ANONYMOUS')" th:class="${#strings.equals(page,'regist')} ? current : ''"><a th:href="@{'/regist/post'}">Regist</a></li>
+							    <li sec:authorize="hasRole('ROLE_BASIC')"><a href="#"><span sec:authentication="principal.user_name"/>님 어서오세요 </a></li> <!-- mypage이동 -->
+							    <li sec:authorize="hasRole('ROLE_BASIC')"><a href="#" onclick="document.logout.submit()">Logout</a></li>
+							</ul>
+						</nav>
+					</div>
+					<!--/.nav-collapse -->
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- end top -->
+	</header>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<!-- Pagination Bar -->
+	<ul class='pagination' th:fragment='paginationbarFragment'>
+		<li th:class="${page.firstPage}?'page-item disabled':'page-item'">
+			<a class="page-link" th:if='${page.firstPage}' href="#">← First</a>
+			<a class="page-link" th:if='${not page.firstPage}' th:href='@{${page.url}(page=0,size=${page.size})}'>← First</a>
+		</li>
+		<li th:class="${page.hasPreviousPage}? 'page-item' : 'page-item disabled'">
+			<a class="page-link" th:if='${not page.hasPreviousPage}' href="#" title='Go to previous page'>«</a>
+			<a class="page-link" th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page=${page.number-2},size=${page.size})}' title='Go to previous page'>«</a>
+		</li>
+		<li th:each='item : ${page.items}' th:class="${item.current}? 'page-item active' : 'page-item'">
+			<a class="page-link" th:if='${item.current}' href="#">
+				<span th:text='${item.number}'>1</span>
+			</a>
+			<a class="page-link" th:if='${not item.current}' th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'>
+				<span th:text='${item.number}'>1</span>
+			</a>
+		</li>
+		<li th:class="${page.hasNextPage}? 'page-item' : 'page-item disabled'">
+			<a class="page-link" th:if='${page.hasNextPage}' th:href='@{${page.url}(page=${page.number},size=${page.size})}' title='Go to next page'>»</a>
+			<a class="page-link" th:if='${not page.hasNextPage}' href="#" title='Go to next page'>»</a>
+		</li>
+		<li th:class="${page.lastPage}? 'page-item disabled' : 'page-item'">
+			<a class="page-link" th:if='${not page.lastPage}' th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>Last →</a>
+			<a class="page-link" th:if='${page.lastPage}' href="#">Last →</a>
+		</li>
+	</ul>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/layout/default"> 
+	
+	<!-- 사용자 CSS 추가 -->
+	<th:block layout:fragment="css">
+	<style>
+		.txt_post { 
+			display: -webkit-box; 
+			display: -ms-flexbox; 
+			display: box; 
+			margin-top:1px; 
+			max-height:120px; 
+			overflow:hidden; 
+			vertical-align:top; 
+			text-overflow: ellipsis; 
+			word-break:break-all; 
+			-webkit-box-orient:vertical; 
+			-webkit-line-clamp:5
+		}
+	</style>
+	</th:block>
+
+	<!-- 사용자 스크립트 추가 -->
+	<th:block layout:fragment="script">
+	</th:block>
+
+	<div layout:fragment="content" >
+		<nav th:replace="fragments/navbar :: navbarFragment('home')"></nav>
+		<!-- section intro -->
+		<section id="intro">
+			<div class="slogan">
+				<div class="icon">
+					<i class="icon-beaker icon-10x"></i>
+				</div>
+				<h1>Welcome to <span>my portfolio</span> to see you</h1>
+				<h2>It is a portfolio made about a month.</h2>
+			</div>
+		</section>
+		<!-- end intro -->
+
+		<!-- section works -->
+		<section id="works" class="section gray-bg" th:if="${portfolio != null}">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="heading">
+							<h3><span>Portfolio show</span></h3>
+						</div>
+						<div class="sub-heading">
+							<p>
+								If you want to see more posts, click <a href="/portfolio">here</a>.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<div class="clear">
+						</div>
+						<div class="row">
+							<ul class="portfolio-area da-thumbs">
+								<li class="portfolio-item" data-id="id-0" data-type="web" th:each="dto,index : ${portfolio}" th:if="${dto.fileVO.size()>0 and index.index<5}">
+									<div class="span3">
+										<div class="thumbnail">
+											<div class="image-wrapp">
+												<img th:src="@{${dto.fileVO[0].fileStreCours +'/s_'+ dto.fileVO[0].streFileNm}}" th:alt="${dto.fileVO[0].orignlFileNm}" style="width:100%; height:100%">
+												<article class="da-animate da-slideFromRight" style="display: block;">
+													<h5><strong th:text="${dto.title}"></strong></h5>
+													<a th:href="'/portfolio/'+${dto.seq}"><i class="icon-rounded icon-48 icon-link"></i></a>
+													<span>
+														<a class="zoom" data-pretty="prettyPhoto" th:href="@{${dto.fileVO[0].fileStreCours +'/'+ dto.fileVO[0].streFileNm}}">
+															<i class="icon-rounded icon-48 icon-zoom-in"></i>
+														</a>
+													</span>
+												</article>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- section works -->
+
+		<!-- section services -->
+		<section id="services" class="section parallax dark" th:if="${board != null}">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="heading">
+							<h3><span>Board Show</span></h3>
+						</div>
+						<div class="sub-heading">
+							<p>
+								If you want to see more posts, click <a href="/board">here</a>.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="span3" th:each="bod,index : ${board}">
+						<div class="box aligncenter">
+							<div class="halftop">
+								<h4 style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><strong>[[${bod.title}]]</strong></h4>
+								<i class="icon-desktop icon-4x"></i>
+							</div>
+							<p class="txt_post">
+								[[${bod.content}]]
+							</p>
+							<a th:href="'/board/'+${bod.seq}" class="btn btn-theme">Learn more</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end section services -->
+
+	</div>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="/layout/default">
+
+	<!-- 사용자 CSS 추가 -->
+	<th:block layout:fragment="css">
+		<link th:href="@{/assets/css/my-login.css}" rel="stylesheet" />
+	</th:block>
+
+		
+	<!-- 사용자 스크립트 추가 -->
+	<th:block layout:fragment="script">
+<!-- 		<script th:src="@{/assets/js/my-login.js}"></script> -->
+	</th:block>
+
+	<div layout:fragment="content" >
+		<nav th:replace="/fragments/navbar :: navbarFragment('login')"></nav>
+		<nav th:replace="/fragments/intro :: introFragment('> login')"></nav>
+		
+		<!-- section contact -->
+		<section id="contact" class="section">
+			<!-- <div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="heading">
+							<h3><span>Get in touch</span></h3>
+						</div>
+						<div class="sub-heading">
+							<p>
+								Lorem ipsum dolor sit amet, mutat paulo simul per no, assum fastidii vituperata eam no.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div> -->
+
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<h4><i class="icon-github-alt"></i><strong>Login form</strong></h4>
+						<p>
+							The page you are signing in to. Please enter your ID and password correctly and log in.
+						</p>
+						<!-- start login form -->
+						<div class="my-login-page">
+							<div class="card-wrapper">
+								<div class="card fat">
+									<div class="card-body">
+										<h4 class="card-title">Login</h4>
+										<form th:action="@{/spring_security_login}" method="post">
+											<div class="form-group">
+											        <label for="email">E-Mail Address <span>*</span></label>
+											        <input type="text" id="email" name="email" class="form-control" placeholder="Your Email"/>
+											</div>
+											<div class="form-group">
+											        <label for="pwd">Password <span>*</span></label>
+											        <input type="password" id="pwd" name="pwd" class="form-control" placeholder="Your Password"/>
+											</div>
+											<div class="form-group no-margin">
+												<p th:if="${loginError}" class="error">Wrong user or password</p>
+												<button type="submit" class="btn btn-primary btn-block">
+													Login
+												</button>
+											</div>
+											<div class="margin-top20 text-center">
+												Don't have an account? <a href="register.html">Create One</a>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- end login form -->
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end section contact -->
+	</div>
+</html>
+		
